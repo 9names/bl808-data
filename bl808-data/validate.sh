@@ -1,2 +1,2 @@
 #!/bin/sh
-temp/Linux64/SVDConv generated/BL808.svd
+../cmsis-tools/Linux64/SVDConv generated/BL808.svd
