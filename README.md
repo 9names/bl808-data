@@ -11,7 +11,7 @@ Output SVD is in `bl808-data/generated`
 
 Running this tool:
 - install rust via rustup.rs
-- install xmlstarlet (if you want prettified svd output)
+- install svdtools via cargo
 - run `regen.sh` from inside `bl808-data`
 
 TODO:
