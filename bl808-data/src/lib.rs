@@ -107,7 +107,7 @@ pub fn parseit(
         // Field: "uint32_t reserved_0_26 : 27; /* [26: 0],       rsvd,        0x0 */"
         // End of struct:  "} BF;"
         ParseState::StructStr => {
-            if let Some(m) = regex!(r"\s*uint32_t *([a-zA-Z_\d]*) *: *(\d*); */\* *\[([\d: ]*)\],\s*([r/wsvd]*)\s*,\s*(0x[\da-fA-F]*) \*/.*").captures(&line) {
+            if let Some(m) = regex!(r"\s*uint32_t *([a-zA-Z_\d]*) *: *(\d*); */\* *\[([\d: ]*)\],\s*([\S]*?)\s*,\s*(0x[\da-fA-F]*) \*/.*").captures(&line) {
                 state = ParseState::StructStr;
                 // 1st capture is the field name
                 data.push(String::from(m.get(1).unwrap().as_str()));
