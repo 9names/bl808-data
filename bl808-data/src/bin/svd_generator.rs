@@ -44,6 +44,7 @@ fn main() -> anyhow::Result<()> {
     // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
     let subscriber = FmtSubscriber::builder()
         .with_max_level(Level::INFO) // Set this to DEBUG or TRACE to get debugging info
+        .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
     print!("{}", svd_fragments::HEADER);
@@ -64,6 +65,7 @@ fn main() -> anyhow::Result<()> {
         svd_fragments::EF_DATA,
     );
     let _ = peripheral("sources/headers/bl_mcu_sdk/glb_reg.h", svd_fragments::GLB);
+    // let _ = peripheral("sources/headers/bl_iot_sdk/glb_reg.h", svd_fragments::GLB);
     let _ = peripheral("sources/headers/bl_mcu_sdk/gpip_reg.h", svd_fragments::GPIP);
     let _ = peripheral("sources/headers/bl_mcu_sdk/hbn_reg.h", svd_fragments::HBN);
     let _ = peripheral("sources/headers/bl_mcu_sdk/ipc_reg.h", svd_fragments::IPC0);
