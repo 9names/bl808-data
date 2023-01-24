@@ -14,5 +14,13 @@ Running this tool:
 - install svdtools via cargo
 - run `regen.sh` from inside `bl808-data`
 
+To debug this tool during development:
+
+Add the registers you want to test against to sources/testing/test_registers.h then run
+
+```system
+cargo run --bin test_bin > test.svd
+```
+
 TODO:
 - Binary for writing to separate files instead of generating SVD to stdout
