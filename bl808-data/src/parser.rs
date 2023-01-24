@@ -74,6 +74,8 @@ fn svd_access_map(access: &str) -> &str {
         "rw" => "read-write",
         "r" => "read-only",
         "w" => "write-only",
+        "w1p" => "write-only", // TODO: needs oneTo(something) in modifiedWriteValues.
+        "w1c" => "write-only", // TODO: needs oneToClear in modifiedWriteValues.
         "rsvd" => "read-only",
         _ => "UNMAPPED_PLZ_FIX",
     }
