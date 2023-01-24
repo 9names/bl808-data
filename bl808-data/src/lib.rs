@@ -89,12 +89,18 @@ pub fn parseit(
             }
         }
         // Looking for start of struct: "struct {"
+        // Being a bit more permissive here to allow for sdh_reg, which puts the open brace on a new line
         ParseState::UnionStr => {
-            if let Some(m) = regex!(r"\s*struct\s*\{").captures(&line) {
+            if let Some(m) = regex!(r"\s*struct\s*").captures(&line) {
                 state = ParseState::StructStr;
                 data.push(String::from(m.get(0).unwrap().as_str()));
                 event!(Level::TRACE, "\nMatch: {}", data[0]);
                 (state, Some(ParseResult::Match(data)))
+            }
+            // empty brace on line. maybe should be it's own state?
+            else if let Some(_) = regex!(r"\w*(\{)\w*").captures(&line) {
+                state = ParseState::StructStr;
+                (state, None)
             } else {
                 event!(
                     Level::TRACE,
