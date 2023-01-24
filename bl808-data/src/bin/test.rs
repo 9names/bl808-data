@@ -19,7 +19,7 @@ fn main() -> anyhow::Result<()> {
         .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
-    let f = std::fs::read("sources/headers/glb_basic.h")?;
+    let f = std::fs::read("sources/testing/test_registers.h")?;
 
     // Create our parse context
     let mut parser = Parser::new();
