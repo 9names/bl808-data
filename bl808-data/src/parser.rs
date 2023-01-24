@@ -71,6 +71,7 @@ impl Field {
 fn svd_access_map(access: &str) -> &str {
     match access {
         "r/w" => "read-write",
+        "rw" => "read-write",
         "r" => "read-only",
         "w" => "write-only",
         "rsvd" => "read-only",
