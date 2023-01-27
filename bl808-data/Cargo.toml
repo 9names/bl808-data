@@ -16,5 +16,9 @@ name = "svd_generator"
 path = "src/bin/svd_generator.rs"
 
 [[bin]]
+name = "svd_generator_bl616"
+path = "src/bin/svd_generator_bl616.rs"
+
+[[bin]]
 name = "test_bin"
 path = "src/bin/test.rs"
