@@ -24,11 +24,7 @@ impl Register {
 
 impl fmt::Display for Register {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", self.name, self.description, self.address_offset, self.reset_value())?;
-        for field in &self.fields {
-            write!(f, "{}", field)?;
-        }
-        write!(f, "</fields>\n</register>",)
+        write!(f, "{}", self.to_xml())
     }
 }
 
@@ -58,6 +54,16 @@ impl Register {
         for field in &self.fields {
             out += &field.to_svdtools_yaml();
         }
+        out
+    }
+
+    pub fn to_xml(&self) -> String {
+        let mut out = String::new();
+        out += &format!("<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", self.name, self.description, self.address_offset, self.reset_value());
+        for field in &self.fields {
+            out += &format!("{}", field);
+        }
+        out += "</fields>\n</register>";
         out
     }
 }
