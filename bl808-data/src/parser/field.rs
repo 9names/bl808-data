@@ -25,11 +25,7 @@ impl Field {
 
 impl fmt::Display for Field {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "<field>\n<name>{}</name>\n<description>{}</description>\n<bitRange>[{}:{}]</bitRange>\n<access>{}</access>\n</field>\n",
-            self.name, self.description, self.msb, self.lsb, svd_access_map(&self.access),
-        )
+        write!(f, "{}", self.to_xml(),)
     }
 }
 
@@ -74,6 +70,18 @@ impl Field {
             self.msb,
             self.lsb,
             svd_access_map(&self.access),
+        )
+    }
+
+    #[allow(dead_code)]
+    pub fn to_xml(&self) -> String {
+        format!(
+            "<field>\n<name>{}</name>\n<description>{}</description>\n<bitRange>[{}:{}]</bitRange>\n<access>{}</access>\n</field>\n",
+            self.name,
+            self.description,
+            self.msb,
+            self.lsb,
+            svd_access_map(&self.access)
         )
     }
 }
