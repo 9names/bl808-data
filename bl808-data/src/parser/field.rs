@@ -47,3 +47,33 @@ pub fn svd_access_map(access: &str) -> &str {
         _ => "UNMAPPED_PLZ_FIX",
     }
 }
+
+impl Field {
+    #[allow(dead_code)]
+    pub fn to_svdtools_yaml(&self) -> String {
+        let msb = str::parse::<u32>(&self.msb).expect("Couldn't parse Field MSB as an int");
+        let lsb = str::parse::<u32>(&self.lsb).expect("Couldn't parse Field LSB as an int");
+        let bit_width = (msb + 1) - lsb;
+
+        format!(
+        "    {}:\n      description: {}\n      bitOffset: {}\n      bitWidth: {}\n      access: {}\n",
+        self.name,
+        self.description,
+        self.lsb,
+        bit_width,
+        svd_access_map(&self.access),
+    )
+    }
+
+    #[allow(dead_code)]
+    pub fn to_svd2rust_style_yaml(&self) -> String {
+        format!(
+            "    {}:\n      description: {}\n      bitRange: [{}:{}]\n      access: {}\n",
+            self.name,
+            self.description,
+            self.msb,
+            self.lsb,
+            svd_access_map(&self.access),
+        )
+    }
+}
