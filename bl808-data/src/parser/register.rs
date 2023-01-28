@@ -43,8 +43,7 @@ impl Register {
     }
 
     pub fn to_yaml(&self) -> String {
-        let mut out = String::new();
-        out += &format!(
+        let mut out = format!(
             "{}:\n  description: {}\n  addressOffset: {}\n  resetValue: {:#010X}\n  fields:\n",
             self.name,
             self.description,
@@ -58,8 +57,13 @@ impl Register {
     }
 
     pub fn to_xml(&self) -> String {
-        let mut out = String::new();
-        out += &format!("<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", self.name, self.description, self.address_offset, self.reset_value());
+        let mut out = format!(
+            "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n",
+            self.name,
+            self.description,
+            self.address_offset,
+            self.reset_value()
+        );
         for field in &self.fields {
             out += &format!("{}", field);
         }
