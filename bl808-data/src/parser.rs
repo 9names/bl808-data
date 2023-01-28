@@ -1,95 +1,10 @@
-use core::fmt;
-
 use crate::{parseit, ParseState};
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Register {
-    name: String,
-    description: String,
-    address_offset: String,
-    fields: Vec<Field>,
-    reset_value: Option<String>,
-}
-
-impl Register {
-    fn new() -> Register {
-        Register {
-            name: "".to_string(),
-            description: "".to_string(),
-            address_offset: "".to_string(),
-            fields: vec![],
-            reset_value: None,
-        }
-    }
-}
-
-impl fmt::Display for Register {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // Assuming u32 register sizes for now
-        // Calculate reset value
-        let mut reset_value: u32 = 0;
-        for field in &self.fields {
-            if let Some(reset_value_str) = field.reset_value.strip_prefix("0x") {
-                let value = u32::from_str_radix(reset_value_str, 16).unwrap();
-                let offset = field.lsb.parse::<u32>().unwrap();
-                reset_value += value << offset;
-            }
-        }
-        write!(f, "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", self.name, self.description, self.address_offset, reset_value)?;
-        for field in &self.fields {
-            write!(f, "{}", field)?;
-        }
-        write!(f, "</fields>\n</register>",)
-    }
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Field {
-    name: String,
-    description: String,
-    lsb: String,
-    msb: String,
-    access: String,
-    reset_value: String,
-}
-
-impl Field {
-    fn new() -> Field {
-        Field {
-            name: "".to_string(),
-            description: "".to_string(),
-            lsb: "".to_string(),
-            msb: "".to_string(),
-            access: "".to_string(),
-            reset_value: "".to_string(),
-        }
-    }
-}
-
-/// SVD uses different strings to represent access modifiers than what is used in the SDK headers.
-/// map these through to SVD versions
-fn svd_access_map(access: &str) -> &str {
-    match access {
-        "r/w" => "read-write",
-        "rw" => "read-write",
-        "r" => "read-only",
-        "w" => "write-only",
-        "w1p" => "write-only", // TODO: needs oneTo(something) in modifiedWriteValues.
-        "w1c" => "write-only", // TODO: needs oneToClear in modifiedWriteValues.
-        "rsvd" => "read-only",
-        _ => "UNMAPPED_PLZ_FIX",
-    }
-}
-
-impl fmt::Display for Field {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "<field>\n<name>{}</name>\n<description>{}</description>\n<bitRange>[{}:{}]</bitRange>\n<access>{}</access>\n</field>\n",
-            self.name, self.description, self.msb, self.lsb, svd_access_map(&self.access),
-        )
-    }
-}
+mod field;
+mod register;
+pub use field::svd_access_map;
+pub use field::Field;
+pub use register::Register;
 
 #[derive(Debug)]
 pub struct Parser {
