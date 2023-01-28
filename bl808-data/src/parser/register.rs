@@ -24,17 +24,7 @@ impl Register {
 
 impl fmt::Display for Register {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // Assuming u32 register sizes for now
-        // Calculate reset value
-        let mut reset_value: u32 = 0;
-        for field in &self.fields {
-            if let Some(reset_value_str) = field.reset_value.strip_prefix("0x") {
-                let value = u32::from_str_radix(reset_value_str, 16).unwrap();
-                let offset = field.lsb.parse::<u32>().unwrap();
-                reset_value += value << offset;
-            }
-        }
-        write!(f, "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", self.name, self.description, self.address_offset, reset_value)?;
+        write!(f, "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", self.name, self.description, self.address_offset, self.reset_value())?;
         for field in &self.fields {
             write!(f, "{}", field)?;
         }
@@ -43,9 +33,8 @@ impl fmt::Display for Register {
 }
 
 impl Register {
-    pub fn to_yaml(&self) -> String {
+    fn reset_value(&self) -> u32 {
         // Assuming u32 register sizes for now
-        // Calculate reset value
         let mut reset_value: u32 = 0;
         for field in &self.fields {
             if let Some(reset_value_str) = field.reset_value.strip_prefix("0x") {
@@ -54,11 +43,17 @@ impl Register {
                 reset_value += value << offset;
             }
         }
+        reset_value
+    }
+
+    pub fn to_yaml(&self) -> String {
         let mut out = String::new();
-        // out += &format!("<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n", reg.name, reg.description, reg.address_offset, reset_value);
         out += &format!(
             "{}:\n  description: {}\n  addressOffset: {}\n  resetValue: {:#010X}\n  fields:\n",
-            self.name, self.description, self.address_offset, reset_value
+            self.name,
+            self.description,
+            self.address_offset,
+            self.reset_value()
         );
         for field in &self.fields {
             out += &field.to_svdtools_yaml();
