@@ -1,6 +1,7 @@
 use tracing::{event, instrument, Level};
 pub mod parser;
 pub mod svd_fragments;
+pub mod svd_fragments_bl616;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ParseState {
