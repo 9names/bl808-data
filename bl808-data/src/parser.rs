@@ -4,11 +4,11 @@ use crate::{parseit, ParseState};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Register {
-    name: String,
-    description: String,
-    address_offset: String,
-    fields: Vec<Field>,
-    reset_value: Option<String>,
+    pub name: String,
+    pub description: String,
+    pub address_offset: String,
+    pub fields: Vec<Field>,
+    pub reset_value: Option<String>,
 }
 
 impl Register {
@@ -45,12 +45,12 @@ impl fmt::Display for Register {
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Field {
-    name: String,
-    description: String,
-    lsb: String,
-    msb: String,
-    access: String,
-    reset_value: String,
+    pub name: String,
+    pub description: String,
+    pub lsb: String,
+    pub msb: String,
+    pub access: String,
+    pub reset_value: String,
 }
 
 impl Field {
@@ -68,7 +68,7 @@ impl Field {
 
 /// SVD uses different strings to represent access modifiers than what is used in the SDK headers.
 /// map these through to SVD versions
-fn svd_access_map(access: &str) -> &str {
+pub fn svd_access_map(access: &str) -> &str {
     match access {
         "r/w" => "read-write",
         "rw" => "read-write",
