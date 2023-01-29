@@ -24,7 +24,8 @@ impl Parser {
 
     pub fn parse(&mut self, line_num: usize, line: String) {
         let (newstate, parse_result) = parseit(self.state, line, line_num);
-        match newstate {
+        // Match against the state *before* we parsed (we might have transitioned due to parseit)
+        match self.state {
             ParseState::PeripheralStart => {} // Don't do anything with peri
             ParseState::RegAddress => {
                 if let Some(parse) = parse_result {
