@@ -58,11 +58,14 @@ impl Field {
         let msb = str::parse::<u32>(&self.msb).expect("Couldn't parse Field MSB as an int");
         let lsb = str::parse::<u32>(&self.lsb).expect("Couldn't parse Field LSB as an int");
         let bit_width = (msb + 1) - lsb;
-
+        let descriptionfield = if !self.description.trim().is_empty() {
+            format!("      description: {}\n", self.description.trim())
+        } else {
+            String::from("")
+        };
         format!(
-        "    {}:\n      description: {}\n      bitOffset: {}\n      bitWidth: {}\n      access: {}\n",
+        "    {}:\n{descriptionfield}      bitOffset: {}\n      bitWidth: {}\n      access: {}\n",
         self.name,
-        self.description,
         self.lsb,
         bit_width,
         svd_access_map(&self.access),
@@ -71,10 +74,14 @@ impl Field {
 
     #[allow(dead_code)]
     pub fn to_svd2rust_style_yaml(&self) -> String {
+        let descriptionfield = if !self.description.trim().is_empty() {
+            format!("      description: {}\n", self.description.trim())
+        } else {
+            String::from("")
+        };
         format!(
-            "    {}:\n      description: {}\n      bitRange: [{}:{}]\n      access: {}\n",
+            "    {}:\n{descriptionfield}      bitRange: [{}:{}]\n      access: {}\n",
             self.name,
-            self.description,
             self.msb,
             self.lsb,
             svd_access_map(&self.access),
@@ -83,10 +90,14 @@ impl Field {
 
     #[allow(dead_code)]
     pub fn to_xml(&self) -> String {
+        let descriptionfield = if !self.description.trim().is_empty() {
+            format!("<description>{}</description>\n", self.description.trim())
+        } else {
+            String::from("")
+        };
         format!(
-            "<field>\n<name>{}</name>\n<description>{}</description>\n<bitRange>[{}:{}]</bitRange>\n<access>{}</access>\n</field>\n",
+            "<field>\n<name>{}</name>\n{descriptionfield}<bitRange>[{}:{}]</bitRange>\n<access>{}</access>\n</field>\n",
             self.name,
-            self.description,
             self.msb,
             self.lsb,
             svd_access_map(&self.access)
