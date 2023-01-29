@@ -21,6 +21,3 @@ Add the registers you want to test against to sources/testing/test_registers.h t
 ```system
 cargo run --bin test_bin > test.svd
 ```
-
-TODO:
-- Binary for writing to separate files instead of generating SVD to stdout
