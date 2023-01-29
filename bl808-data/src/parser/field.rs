@@ -33,13 +33,21 @@ impl fmt::Display for Field {
 /// map these through to SVD versions
 pub fn svd_access_map(access: &str) -> &str {
     match access {
-        "r/w" => "read-write",
-        "rw" => "read-write",
         "r" => "read-only",
+        "R" => "read-only",
+        "rw" => "read-write",
+        "RW" => "read-write",
+        "RW1C" => "read-write", // TODO: needs oneToClear in modifiedWriteValues.
+        "RWAC" => "read-write", // TODO: needs anyToClear? in modifiedWriteValues.
+        "r/w" => "read-write",
+        "RO" => "read-only",
+        "ROC" => "read-only", // TODO: needs readToClear? in modifiedWriteValues.
         "w" => "write-only",
+        "WO" => "write-only",
         "w1p" => "write-only", // TODO: needs oneTo(something) in modifiedWriteValues.
         "w1c" => "write-only", // TODO: needs oneToClear in modifiedWriteValues.
         "rsvd" => "read-only",
+        "RSVD" => "read-only",
         _ => "UNMAPPED_PLZ_FIX",
     }
 }
