@@ -29,20 +29,6 @@ impl Parser {
             ParseState::PeripheralStart => {} // Don't do anything with peri
             ParseState::RegAddress => {
                 if let Some(parse) = parse_result {
-                    match parse {
-                        crate::ParseResult::Match(_n) => {
-                            // println!("whats my name? {n:?}")
-                        }
-                        crate::ParseResult::Capture(c) => {
-                            if let Some(reg) = self.register.as_mut() {
-                                reg.name = c[0].clone();
-                            }
-                        }
-                    }
-                }
-            }
-            ParseState::UnionStart => {
-                if let Some(parse) = parse_result {
                     if let Some(reg) = &self.register {
                         self.registers.push(reg.clone());
                     }
@@ -57,6 +43,7 @@ impl Parser {
                     self.register = Some(reg);
                 }
             }
+            ParseState::UnionStart => {}
             ParseState::StructStart => {}
             ParseState::FieldEntry => {
                 if let Some(parse) = parse_result {
@@ -96,36 +83,7 @@ impl Parser {
                     }
                 }
             }
-            ParseState::EndOfStruct => {
-                if let Some(parse) = parse_result {
-                    let mut field = Field::new();
-                    match parse {
-                        crate::ParseResult::Match(_) => panic!("Not expecting match"),
-                        crate::ParseResult::Capture(c) => {
-                            field.name = c[0].trim().to_string();
-                            // c[1] is number of bits, we don't need that.
-                            if c[2].contains(':') {
-                                let mut c_arr = c[2].split(':');
-                                let msb = c_arr.next();
-                                let lsb = c_arr.next();
-                                field.msb = msb.unwrap().trim().to_string();
-                                field.lsb = lsb.unwrap().trim().to_string();
-                            } else {
-                                field.msb = c[2].trim().to_string();
-                                field.lsb = field.msb.clone();
-                            }
-                            field.access = c[3].trim().to_string();
-                            field.reset_value = c[4].trim().to_string();
-                        }
-                    }
-                    // println!("field  {field:?}");
-                    if let Some(reg) = self.register.as_mut() {
-                        reg.fields.push(field);
-                    }
-                } else {
-                    // println!("fielding the wrong question?");
-                }
-            }
+            ParseState::EndOfStruct => {}
             ParseState::Size => {}
             ParseState::Name => {
                 if let Some(parse) = parse_result {
