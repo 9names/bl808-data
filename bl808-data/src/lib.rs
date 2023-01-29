@@ -166,6 +166,11 @@ pub fn parseit(
                 data.push(String::from(m.get(0).unwrap().as_str()));
                 event!(Level::TRACE, "\nCaptures: {}", data[0]);
                 (state, Some(ParseResult::Capture(data)))
+            } else if let Some(m) = regex!(r"\s*(uint16_t)\s*SHORT;").captures(&line) {
+                state = ParseState::Name;
+                data.push(String::from(m.get(0).unwrap().as_str()));
+                event!(Level::TRACE, "\nCaptures: {}", data[0]);
+                (state, Some(ParseResult::Capture(data)))
             } else {
                 event!(
                     Level::TRACE,
