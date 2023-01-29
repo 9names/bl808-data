@@ -8,6 +8,7 @@ pub struct Register {
     pub address_offset: String,
     pub fields: Vec<Field>,
     pub reset_value: Option<String>,
+    pub size: Option<u8>,
 }
 
 impl Register {
@@ -18,6 +19,7 @@ impl Register {
             address_offset: "".to_string(),
             fields: vec![],
             reset_value: None,
+            size: None,
         }
     }
 }
@@ -43,8 +45,19 @@ impl Register {
     }
 
     pub fn to_yaml(&self) -> String {
+        let sizefield = if self.size.is_some() {
+            let size = self.size.unwrap();
+            // default size is 32, no need to print it
+            if size != 32 {
+                format!("  size: {}\n", size)
+            } else {
+                String::from("")
+            }
+        } else {
+            String::from("")
+        };
         let mut out = format!(
-            "{}:\n  description: {}\n  addressOffset: {}\n  resetValue: {:#010X}\n  fields:\n",
+            "{}:\n  description: {}\n  addressOffset: {}\n{sizefield}  resetValue: {:#010X}\n  fields:\n",
             self.name,
             self.description,
             self.address_offset,
@@ -57,8 +70,19 @@ impl Register {
     }
 
     pub fn to_xml(&self) -> String {
+        let sizefield = if self.size.is_some() {
+            let size = self.size.unwrap();
+            // default size is 32, no need to print it
+            if size != 32 {
+                format!("<size>{}</size>\n", size)
+            } else {
+                String::from("")
+            }
+        } else {
+            String::from("")
+        };
         let mut out = format!(
-            "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n<resetValue>{:#010X}</resetValue>\n<fields>\n",
+            "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n{sizefield}<resetValue>{:#010X}</resetValue>\n<fields>\n",
             self.name,
             self.description,
             self.address_offset,

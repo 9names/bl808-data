@@ -85,7 +85,23 @@ impl Parser {
                 }
             }
             ParseState::EndOfStruct => {}
-            ParseState::Size => {}
+            ParseState::Size => {
+                if let Some(parse) = parse_result {
+                    if let Some(reg) = self.register.as_mut() {
+                        match parse {
+                            crate::ParseResult::Match(_) => panic!("Not expecting match"),
+                            crate::ParseResult::Capture(c) => {
+                                println!("reg width {:?}", c[0]);
+                                reg.size = match c[0].as_str() {
+                                    "uint32_t" => Some(32),
+                                    "uint16_t" => Some(16),
+                                    _ => panic!("Headers should specify register width"),
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             ParseState::Name => {
                 if let Some(parse) = parse_result {
                     match parse {
