@@ -5,13 +5,21 @@ pub mod svd_fragments_bl616;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ParseState {
-    NoMatch,
-    BlockName,
-    BlockAddr,
-    UnionStr,
-    StructStr,
-    Field,
+    /// Looking for start of Peripheral block: "struct glb_reg {"
+    PeripheralStart,
+    /// Looking for register address: "/* 0x0 : soc_info0 */""
+    RegAddress,
+    /// Looking for start of union: "union {"
+    UnionStart,
+    /// Looking for start of struct: "struct {"
+    StructStart,
+    /// Field: "uint32_t reserved_0_26 : 27; /* [26: 0],       rsvd,        0x0 */"
+    FieldEntry,
+    // End of struct (in case we missed it):  "} BF;"
+    EndOfStruct,
+    /// Looking for 2nd union member: "uint32_t WORD;"
     Size,
+    /// Looking for name of the union: "} soc_info0;"
     Name,
 }
 
@@ -41,9 +49,9 @@ pub fn parseit(
     let mut data: Vec<String> = vec![];
     match state {
         // Looking for start of register block: "struct glb_reg {"
-        ParseState::NoMatch => {
+        ParseState::PeripheralStart => {
             if let Some(m) = regex!(r"\s*struct\s*([a-zA-Z_\d]*)\s*\{").captures(&line) {
-                state = ParseState::BlockName;
+                state = ParseState::RegAddress;
                 // 1st capture is the name of the register block
                 data.push(String::from(m.get(1).unwrap().as_str()));
                 event!(Level::TRACE, "\nCaptures: {}", data[0]);
@@ -57,9 +65,9 @@ pub fn parseit(
             }
         }
         // Looking for register address: "/* 0x0 : soc_info0 */""
-        ParseState::BlockName => {
+        ParseState::RegAddress => {
             if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\d]*) : (.*) \*/").captures(&line) {
-                state = ParseState::BlockAddr;
+                state = ParseState::UnionStart;
                 // 1st capture is register offset
                 data.push(String::from(m.get(1).unwrap().as_str()));
                 // 2nd capture is register name
@@ -75,9 +83,9 @@ pub fn parseit(
             }
         }
         // Looking for start of union: "union {"
-        ParseState::BlockAddr => {
+        ParseState::UnionStart => {
             if let Some(m) = regex!(r"\s*union\s*\{").captures(&line) {
-                state = ParseState::UnionStr;
+                state = ParseState::StructStart;
                 data.push(String::from(m.get(0).unwrap().as_str()));
                 event!(Level::TRACE, "\nMatch: {}", data[0]);
                 (state, Some(ParseResult::Match(data)))
@@ -91,16 +99,16 @@ pub fn parseit(
         }
         // Looking for start of struct: "struct {"
         // Being a bit more permissive here to allow for sdh_reg, which puts the open brace on a new line
-        ParseState::UnionStr => {
+        ParseState::StructStart => {
             if let Some(m) = regex!(r"\s*struct\s*").captures(&line) {
-                state = ParseState::StructStr;
+                state = ParseState::FieldEntry;
                 data.push(String::from(m.get(0).unwrap().as_str()));
                 event!(Level::TRACE, "\nMatch: {}", data[0]);
                 (state, Some(ParseResult::Match(data)))
             }
             // empty brace on line. maybe should be it's own state?
             else if let Some(_) = regex!(r"\w*(\{)\w*").captures(&line) {
-                state = ParseState::StructStr;
+                state = ParseState::FieldEntry;
                 (state, None)
             } else {
                 event!(
@@ -113,9 +121,9 @@ pub fn parseit(
         // Looking for field or end of struct:
         // Field: "uint32_t reserved_0_26 : 27; /* [26: 0],       rsvd,        0x0 */"
         // End of struct:  "} BF;"
-        ParseState::StructStr => {
+        ParseState::FieldEntry => {
             if let Some(m) = regex!(r"\s*uint\d\d?\d?_t *([a-zA-Z_\d]*) *: *(\d*); */\* *\[([\d: ]*)\],\s*([\S]*?)\s*,\s*(0x[\da-fA-F]*) \*/.*").captures(&line) {
-                state = ParseState::StructStr;
+                state = ParseState::FieldEntry;
                 // 1st capture is the field name
                 data.push(String::from(m.get(1).unwrap().as_str()));
                 // 2nd capture is field width
@@ -139,13 +147,13 @@ pub fn parseit(
                 } else {
                     event!(Level::TRACE, "\nMode {state:?} unhandled line {linenum}:{line}");
                     event!(Level::TRACE,"No Capture, moving to field parsing");
-                    state = ParseState::Field;
+                    state = ParseState::EndOfStruct;
                     (state, None)
                 }
             }
         }
         // End of struct (in case we missed it):  "} BF;"
-        ParseState::Field => {
+        ParseState::EndOfStruct => {
             if let Some(m) = regex!(r"\s*} *BF;").captures(&line) {
                 state = ParseState::Size;
                 data.push(String::from(m.get(0).unwrap().as_str()));
@@ -182,7 +190,7 @@ pub fn parseit(
         // Looking for name of the union: "} soc_info0;"
         ParseState::Name => {
             if let Some(m) = regex!(r"\s*}\s*([a-zA-Z_\-\d]*);").captures(&line) {
-                state = ParseState::BlockName;
+                state = ParseState::RegAddress;
                 data.push(String::from(m.get(1).unwrap().as_str()));
                 event!(Level::TRACE, "\nCaptures: {}", data[0]);
                 (state, Some(ParseResult::Capture(data)))

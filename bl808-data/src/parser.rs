@@ -16,7 +16,7 @@ pub struct Parser {
 impl Parser {
     pub fn new() -> Parser {
         Parser {
-            state: ParseState::NoMatch,
+            state: ParseState::PeripheralStart,
             register: None,
             registers: vec![],
         }
@@ -25,8 +25,8 @@ impl Parser {
     pub fn parse(&mut self, line_num: usize, line: String) {
         let (newstate, parse_result) = parseit(self.state, line, line_num);
         match newstate {
-            ParseState::NoMatch => {}
-            ParseState::BlockName => {
+            ParseState::PeripheralStart => {} // Don't do anything with peri
+            ParseState::RegAddress => {
                 if let Some(parse) = parse_result {
                     match parse {
                         crate::ParseResult::Match(_n) => {
@@ -40,7 +40,7 @@ impl Parser {
                     }
                 }
             }
-            ParseState::BlockAddr => {
+            ParseState::UnionStart => {
                 if let Some(parse) = parse_result {
                     if let Some(reg) = &self.register {
                         self.registers.push(reg.clone());
@@ -56,8 +56,8 @@ impl Parser {
                     self.register = Some(reg);
                 }
             }
-            ParseState::UnionStr => {}
-            ParseState::StructStr => {
+            ParseState::StructStart => {}
+            ParseState::FieldEntry => {
                 if let Some(parse) = parse_result {
                     let mut field = Field::new();
                     match parse {
@@ -95,7 +95,7 @@ impl Parser {
                     }
                 }
             }
-            ParseState::Field => {
+            ParseState::EndOfStruct => {
                 if let Some(parse) = parse_result {
                     let mut field = Field::new();
                     match parse {
