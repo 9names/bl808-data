@@ -13,6 +13,8 @@ pub enum ParseState {
     UnionStart,
     /// Looking for start of struct: "struct {"
     StructStart,
+    /// If we got 'struct' instead of 'struct {' , looking for opening brace"
+    StructStart2,
     /// Field: "uint32_t reserved_0_26 : 27; /* [26: 0],       rsvd,        0x0 */"
     FieldEntry,
     // End of struct (in case we missed it):  "} BF;"
@@ -66,10 +68,11 @@ pub fn parseit(
         }
         // Looking for register address: "/* 0x0 : soc_info0 */""
         ParseState::RegAddress => {
-            if let Some(m) = regex!(r"};").captures(&line) {
+            if let Some(_) = regex!(r"};").captures(&line) {
                 state = ParseState::PeripheralStart;
                 (state, None)
-            } else if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\d]*) : (.*) \*/").captures(&line) {
+            } else if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\d]*) : (.*) \*/").captures(&line)
+            {
                 state = ParseState::UnionStart;
                 // 1st capture is register offset
                 data.push(String::from(m.get(1).unwrap().as_str()));
@@ -103,16 +106,28 @@ pub fn parseit(
         // Looking for start of struct: "struct {"
         // Being a bit more permissive here to allow for sdh_reg, which puts the open brace on a new line
         ParseState::StructStart => {
-            if let Some(m) = regex!(r"\s*struct\s*").captures(&line) {
+            if let Some(m) = regex!(r"\s*struct\s*\{\s*").captures(&line) {
                 state = ParseState::FieldEntry;
                 data.push(String::from(m.get(0).unwrap().as_str()));
                 event!(Level::TRACE, "\nMatch: {}", data[0]);
                 (state, Some(ParseResult::Match(data)))
-            }
-            // empty brace on line. maybe should be it's own state?
-            else if let Some(_) = regex!(r"\w*(\{)\w*").captures(&line) {
-                state = ParseState::FieldEntry;
+            } else if let Some(m) = regex!(r"\s*struct\s*").captures(&line) {
+                state = ParseState::StructStart2;
+                data.push(String::from(m.get(0).unwrap().as_str()));
+                event!(Level::TRACE, "\nMatch: {}", data[0]);
+                (state, Some(ParseResult::Match(data)))
+            } else {
+                event!(
+                    Level::TRACE,
+                    "\nMode {state:?} unhandled line {linenum}:{line}"
+                );
                 (state, None)
+            }
+        }
+        ParseState::StructStart2 => {
+            if let Some(_) = regex!(r"\s*\{\s*").captures(&line) {
+                state = ParseState::FieldEntry;
+                (state, Some(ParseResult::Match(data)))
             } else {
                 event!(
                     Level::TRACE,

@@ -45,6 +45,7 @@ impl Parser {
             }
             ParseState::UnionStart => {}
             ParseState::StructStart => {}
+            ParseState::StructStart2 => {}
             ParseState::FieldEntry => {
                 if let Some(parse) = parse_result {
                     let mut field = Field::new();
