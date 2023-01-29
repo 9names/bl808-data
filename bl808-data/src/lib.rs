@@ -161,11 +161,11 @@ pub fn parseit(
         }
         // Looking for 2nd union member: "uint32_t WORD;"
         ParseState::Size => {
-            if let Some(m) = regex!(r"\s*uint32_t WORD;").captures(&line) {
+            if let Some(m) = regex!(r"\s*(uint32_t) WORD;").captures(&line) {
                 state = ParseState::Name;
                 data.push(String::from(m.get(0).unwrap().as_str()));
-                event!(Level::TRACE, "\nMatch: {}", data[0]);
-                (state, Some(ParseResult::Match(data)))
+                event!(Level::TRACE, "\nCaptures: {}", data[0]);
+                (state, Some(ParseResult::Capture(data)))
             } else {
                 event!(
                     Level::TRACE,
