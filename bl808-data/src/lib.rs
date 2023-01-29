@@ -52,7 +52,7 @@ pub fn parseit(
     match state {
         // Looking for start of register block: "struct glb_reg {"
         ParseState::PeripheralStart => {
-            if let Some(m) = regex!(r"\s*struct\s*([a-zA-Z_\d]*)\s*\{").captures(&line) {
+            if let Some(m) = regex!(r"\s*struct\s*([a-zA-Z_\-\d]*)\s*\{").captures(&line) {
                 state = ParseState::RegAddress;
                 // 1st capture is the name of the register block
                 data.push(String::from(m.get(1).unwrap().as_str()));
@@ -71,7 +71,7 @@ pub fn parseit(
             if let Some(_) = regex!(r"};").captures(&line) {
                 state = ParseState::PeripheralStart;
                 (state, None)
-            } else if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\d]*) : (.*) \*/").captures(&line)
+            } else if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\-\d]*) : (.*) \*/").captures(&line)
             {
                 state = ParseState::UnionStart;
                 // 1st capture is register offset
@@ -140,7 +140,7 @@ pub fn parseit(
         // Field: "uint32_t reserved_0_26 : 27; /* [26: 0],       rsvd,        0x0 */"
         // End of struct:  "} BF;"
         ParseState::FieldEntry => {
-            if let Some(m) = regex!(r"\s*uint\d\d?\d?_t *([a-zA-Z_\d]*) *: *(\d*); */\* *\[([\d: ]*)\],\s*([\S]*?)\s*,\s*(0x[\da-fA-F]*) \*/.*").captures(&line) {
+            if let Some(m) = regex!(r"\s*uint\d\d?\d?_t *([a-zA-Z_\-\d]*) *: *(\d*); */\* *\[([\d: ]*)\],\s*([\S]*?)\s*,\s*(0x[\da-fA-F]*) \*/.*").captures(&line) {
                 state = ParseState::FieldEntry;
                 // 1st capture is the field name
                 data.push(String::from(m.get(1).unwrap().as_str()));
