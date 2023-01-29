@@ -133,8 +133,10 @@ impl Parser {
                             // println!("whats my name? {n:?}")
                         }
                         crate::ParseResult::Capture(c) => {
-                            if let Some(reg) = self.register.as_mut() {
+                            if let Some(mut reg) = self.register.take() {
                                 reg.name = c[0].clone();
+                                // At this point our register is complete, push it.
+                                self.registers.push(reg);
                             }
                         }
                     }
