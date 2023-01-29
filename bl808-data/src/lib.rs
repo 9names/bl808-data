@@ -181,7 +181,7 @@ pub fn parseit(
         }
         // Looking for name of the union: "} soc_info0;"
         ParseState::Name => {
-            if let Some(m) = regex!(r"\s*} ([a-z_\-\d]*);").captures(&line) {
+            if let Some(m) = regex!(r"\s*}\s*([a-zA-Z_\-\d]*);").captures(&line) {
                 state = ParseState::BlockName;
                 data.push(String::from(m.get(1).unwrap().as_str()));
                 event!(Level::TRACE, "\nCaptures: {}", data[0]);
