@@ -56,10 +56,14 @@ impl Register {
         } else {
             String::from("")
         };
+        let descriptionfield = if !self.description.trim().is_empty() {
+            format!("  description: {}\n", self.description.trim())
+        } else {
+            String::from("")
+        };
         let mut out = format!(
-            "{}:\n  description: {}\n  addressOffset: {}\n{sizefield}  resetValue: {:#010X}\n  fields:\n",
+            "{}:\n{descriptionfield}  addressOffset: {}\n{sizefield}  resetValue: {:#010X}\n  fields:\n",
             self.name,
-            self.description,
             self.address_offset,
             self.reset_value()
         );
@@ -81,10 +85,14 @@ impl Register {
         } else {
             String::from("")
         };
+        let descriptionfield = if !self.description.trim().is_empty() {
+            format!("<description>{}</description>\n", self.description.trim())
+        } else {
+            String::from("")
+        };
         let mut out = format!(
-            "<register>\n<name>{}</name>\n<description>{}</description>\n<addressOffset>{}</addressOffset>\n{sizefield}<resetValue>{:#010X}</resetValue>\n<fields>\n",
+            "<register>\n<name>{}</name>\n{descriptionfield}<addressOffset>{}</addressOffset>\n{sizefield}<resetValue>{:#010X}</resetValue>\n<fields>\n",
             self.name,
-            self.description,
             self.address_offset,
             self.reset_value()
         );
