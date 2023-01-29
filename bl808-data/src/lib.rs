@@ -66,7 +66,10 @@ pub fn parseit(
         }
         // Looking for register address: "/* 0x0 : soc_info0 */""
         ParseState::RegAddress => {
-            if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\d]*) : (.*) \*/").captures(&line) {
+            if let Some(m) = regex!(r"};").captures(&line) {
+                state = ParseState::PeripheralStart;
+                (state, None)
+            } else if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\d]*) : (.*) \*/").captures(&line) {
                 state = ParseState::UnionStart;
                 // 1st capture is register offset
                 data.push(String::from(m.get(1).unwrap().as_str()));
