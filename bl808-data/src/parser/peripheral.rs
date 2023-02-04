@@ -17,7 +17,7 @@ impl Peripheral {
     }
 
     pub fn to_yaml(&self) -> String {
-        format!("{}:\n  address: {}\n", self.name, self.address,)
+        format!("{}:\n  address: {}\n", self.name.to_ascii_lowercase(), self.address.to_ascii_lowercase(),)
     }
 }
 
@@ -31,8 +31,8 @@ impl fmt::Display for Peripheral {
 pub fn parse_peri_address(line: String, linenum: usize) -> Option<Peripheral> {
     if let Some(m) = regex!(r"#define (\w+)_BASE\W*\(\(uint32_t\)(0x\d+)\)").captures(&line) {
         // We've captured a peripheral base address
-        let name = String::from(m.get(1).unwrap().as_str().to_ascii_lowercase());
-        let address = String::from(m.get(2).unwrap().as_str().to_ascii_lowercase());
+        let name = String::from(m.get(1).unwrap().as_str());
+        let address = String::from(m.get(2).unwrap().as_str());
         event!(Level::TRACE, "\nCaptures: {name} {address}");
         Some(Peripheral { name, address })
     } else {
