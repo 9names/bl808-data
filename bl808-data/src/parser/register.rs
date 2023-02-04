@@ -49,7 +49,7 @@ impl Register {
             let size = self.size.unwrap();
             // default size is 32, no need to print it
             if size != 32 {
-                format!("  size: {}\n", size)
+                format!("  size: {size}\n")
             } else {
                 String::from("")
             }
@@ -78,7 +78,7 @@ impl Register {
             let size = self.size.unwrap();
             // default size is 32, no need to print it
             if size != 32 {
-                format!("<size>{}</size>\n", size)
+                format!("<size>{size}</size>\n")
             } else {
                 String::from("")
             }
@@ -97,7 +97,7 @@ impl Register {
             self.reset_value()
         );
         for field in &self.fields {
-            out += &format!("{}", field);
+            out += &format!("{field}");
         }
         out += "</fields>\n</register>";
         out

@@ -80,7 +80,7 @@ fn peripherals(filenames: &[&str], fragment: &str) -> Result<(), std::io::Error>
     // Create our parse context
     let mut parser = Parser::new();
 
-    println!("<peripheral>\n{}<registers>\n", fragment);
+    println!("<peripheral>\n{fragment}<registers>\n");
 
     for filename in filenames {
         let f = std::fs::read(filename)?;
@@ -92,7 +92,7 @@ fn peripherals(filenames: &[&str], fragment: &str) -> Result<(), std::io::Error>
 
     // Dump out all the registers
     for register in parser.registers() {
-        print!("{}", register);
+        print!("{register}");
     }
     print!("\n</registers>\n</peripheral>");
     Ok(())

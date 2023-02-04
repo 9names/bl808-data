@@ -40,7 +40,7 @@ fn main() -> anyhow::Result<()> {
 
     let _ = peripherals(&filenames);
 
-    let _ = peripheral_base(&chip_filename);
+    let _ = peripheral_base(chip_filename);
 
     Ok(())
 }
@@ -48,7 +48,7 @@ fn main() -> anyhow::Result<()> {
 fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
     // Create generated_yaml dir if it doesn't already exist
     let output_dir = Path::new("generated_yaml");
-    let _ = std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
+    std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
 
     for filename in filenames {
         let path = Path::new(filename);
@@ -62,10 +62,10 @@ fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
         let target_filename = path.file_stem().expect("Filename missing?");
         let mut target_yaml = output_dir.join(target_filename);
         target_yaml.set_extension("yaml");
-        println!("{:?}", target_yaml);
+        println!("{target_yaml:?}");
         let mut file = std::fs::File::create(&target_yaml).expect("Couldn't create yaml file");
         for register in parser.registers() {
-            file.write_all(&register.to_yaml().as_bytes())
+            file.write_all(register.to_yaml().as_bytes())
                 .expect("Failed to write yaml to file");
         }
     }
@@ -75,7 +75,7 @@ fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
 
 fn peripheral_base(filename: &str) -> Result<(), std::io::Error> {
     let output_dir = Path::new("generated_yaml");
-    let _ = std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
+    std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
     let f = std::fs::read(filename)?;
     let target_yaml = output_dir.join("peripheral_base_address.yaml");
     let mut file = std::fs::File::create(&target_yaml).expect("Couldn't create yaml file");
@@ -83,7 +83,7 @@ fn peripheral_base(filename: &str) -> Result<(), std::io::Error> {
         let l = String::from_utf8_lossy(l);
         let address = parse_peri_address(l.to_string(), linenum);
         if let Some(peri) = address {
-            file.write_all(&peri.to_yaml().as_bytes())
+            file.write_all(peri.to_yaml().as_bytes())
                 .expect("Failed to write yaml to file");
         }
     }
