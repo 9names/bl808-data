@@ -25,6 +25,12 @@ impl Peripheral {
     }
 }
 
+impl Default for Peripheral {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl fmt::Display for Peripheral {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.to_yaml())

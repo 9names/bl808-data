@@ -24,6 +24,12 @@ impl Register {
     }
 }
 
+impl Default for Register {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl fmt::Display for Register {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.to_xml())

@@ -23,6 +23,12 @@ impl Field {
     }
 }
 
+impl Default for Field {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl fmt::Display for Field {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.to_xml(),)
