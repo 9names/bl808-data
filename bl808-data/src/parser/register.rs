@@ -63,7 +63,7 @@ impl Register {
         };
         let mut out = format!(
             "{}:\n{descriptionfield}  addressOffset: {}\n{sizefield}  resetValue: {:#010X}\n  fields:\n",
-            self.name,
+            self.name.to_ascii_lowercase(),
             self.address_offset,
             self.reset_value()
         );
@@ -92,7 +92,7 @@ impl Register {
         };
         let mut out = format!(
             "<register>\n<name>{}</name>\n{descriptionfield}<addressOffset>{}</addressOffset>\n{sizefield}<resetValue>{:#010X}</resetValue>\n<fields>\n",
-            self.name,
+            self.name.to_ascii_lowercase(),
             self.address_offset,
             self.reset_value()
         );

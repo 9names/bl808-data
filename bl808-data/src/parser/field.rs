@@ -65,7 +65,7 @@ impl Field {
         };
         format!(
         "    {}:\n{descriptionfield}      bitOffset: {}\n      bitWidth: {}\n      access: {}\n",
-        self.name,
+        self.name.to_ascii_lowercase(),
         self.lsb,
         bit_width,
         svd_access_map(&self.access),
@@ -81,7 +81,7 @@ impl Field {
         };
         format!(
             "    {}:\n{descriptionfield}      bitRange: [{}:{}]\n      access: {}\n",
-            self.name,
+            self.name.to_ascii_lowercase(),
             self.msb,
             self.lsb,
             svd_access_map(&self.access),
@@ -97,7 +97,7 @@ impl Field {
         };
         format!(
             "<field>\n<name>{}</name>\n{descriptionfield}<bitRange>[{}:{}]</bitRange>\n<access>{}</access>\n</field>\n",
-            self.name,
+            self.name.to_ascii_lowercase(),
             self.msb,
             self.lsb,
             svd_access_map(&self.access)
