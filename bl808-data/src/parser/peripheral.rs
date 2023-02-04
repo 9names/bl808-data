@@ -17,7 +17,11 @@ impl Peripheral {
     }
 
     pub fn to_yaml(&self) -> String {
-        format!("{}:\n  address: {}\n", self.name.to_ascii_lowercase(), self.address.to_ascii_lowercase(),)
+        format!(
+            "{}:\n  address: {}\n",
+            self.name.to_ascii_lowercase(),
+            self.address.to_ascii_lowercase(),
+        )
     }
 }
 
