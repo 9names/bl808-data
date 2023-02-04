@@ -1,6 +1,7 @@
 use crate::{parseit, ParseState};
 
 mod field;
+pub mod peripheral;
 mod register;
 pub use field::svd_access_map;
 pub use field::Field;
