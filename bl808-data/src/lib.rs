@@ -68,7 +68,7 @@ pub fn parseit(
         }
         // Looking for register address: "/* 0x0 : soc_info0 */""
         ParseState::RegAddress => {
-            if let Some(_) = regex!(r"};").captures(&line) {
+            if regex!(r"};").captures(&line).is_some() {
                 state = ParseState::PeripheralStart;
                 (state, None)
             } else if let Some(m) =
@@ -126,7 +126,7 @@ pub fn parseit(
             }
         }
         ParseState::StructStart2 => {
-            if let Some(_) = regex!(r"\s*\{\s*").captures(&line) {
+            if regex!(r"\s*\{\s*").captures(&line).is_some() {
                 state = ParseState::FieldEntry;
                 (state, Some(ParseResult::Match(data)))
             } else {
