@@ -17,7 +17,7 @@ impl Peripheral {
     }
 
     pub fn to_yaml(&self) -> String {
-        format!("{}:\n  address: {}", self.name, self.address,)
+        format!("{}:\n  address: {}\n", self.name, self.address,)
     }
 }
 

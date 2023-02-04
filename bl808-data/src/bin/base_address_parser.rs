@@ -1,6 +1,6 @@
 use bl808_data::parser::peripheral::parse_peri_address;
 use tracing::Level;
-use tracing_subscriber::{registry::Data, FmtSubscriber};
+use tracing_subscriber::FmtSubscriber;
 
 fn main() -> anyhow::Result<()> {
     // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
@@ -15,7 +15,7 @@ fn main() -> anyhow::Result<()> {
         let l = String::from_utf8_lossy(l);
         let address = parse_peri_address(l.to_string(), linenum);
         if let Some(peri) = address {
-            println!("{peri}");
+            print!("{peri}");
         }
     }
 
