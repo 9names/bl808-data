@@ -1,6 +1,6 @@
 use bl808_data::parser::Parser;
 use bl808_data::svd_fragments;
-use tracing::Level;
+// use tracing::Level;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 #[macro_export]

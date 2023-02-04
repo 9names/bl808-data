@@ -1,7 +1,7 @@
 use std::{io::Write, path::Path};
 
 use bl808_data::parser::{peripheral::parse_peri_address, Parser};
-use tracing::Level;
+// use tracing::Level;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {

@@ -1,5 +1,5 @@
 use bl808_data::parser::peripheral::parse_peri_address;
-use tracing::Level;
+// use tracing::Level;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {
