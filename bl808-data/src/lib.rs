@@ -71,7 +71,8 @@ pub fn parseit(
             if let Some(_) = regex!(r"};").captures(&line) {
                 state = ParseState::PeripheralStart;
                 (state, None)
-            } else if let Some(m) = regex!(r"\s*\.*/* (0x[a-fA-F_\-\d]*) : (.*) \*/").captures(&line)
+            } else if let Some(m) =
+                regex!(r"\s*\.*/* (0x[a-fA-F_\-\d]*) : (.*) \*/").captures(&line)
             {
                 state = ParseState::UnionStart;
                 // 1st capture is register offset
