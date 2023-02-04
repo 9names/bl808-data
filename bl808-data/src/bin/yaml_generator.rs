@@ -1,6 +1,6 @@
 use std::{io::Write, path::Path};
 
-use bl808_data::parser::Parser;
+use bl808_data::parser::{peripheral::parse_peri_address, Parser};
 use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
@@ -43,7 +43,24 @@ fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
         }
     }
 
-    // print!("\n</registers>\n</peripheral>");
+    Ok(())
+}
+
+fn peripheral_base(filename: &str) -> Result<(), std::io::Error> {
+    let output_dir = Path::new("generated_yaml");
+    let _ = std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
+    let f = std::fs::read(filename)?;
+    let target_yaml = output_dir.join("peripheral_base_address.yaml");
+    let mut file = std::fs::File::create(&target_yaml).expect("Couldn't create yaml file");
+    for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
+        let l = String::from_utf8_lossy(l);
+        let address = parse_peri_address(l.to_string(), linenum);
+        if let Some(peri) = address {
+            file.write_all(&peri.to_yaml().as_bytes())
+                .expect("Failed to write yaml to file");
+        }
+    }
+
     Ok(())
 }
 
@@ -77,7 +94,11 @@ fn main() -> anyhow::Result<()> {
         "sources/headers/bl_mcu_sdk/tzc_nsec_reg.h",
     ];
 
+    let chip_filename = "sources/headers/bl_mcu_sdk/bl808.h";
+
     let _ = peripherals(&filenames);
+
+    let _ = peripheral_base(&chip_filename);
 
     Ok(())
 }
