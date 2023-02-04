@@ -4,21 +4,46 @@ use bl808_data::parser::{peripheral::parse_peri_address, Parser};
 use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
-#[macro_export]
-macro_rules! regex {
-    ($re:literal) => {{
-        ::ref_thread_local::ref_thread_local! {
-            static managed REGEX: ::regex::Regex = ::regex::Regex::new($re).unwrap();
-        }
-        <REGEX as ::ref_thread_local::RefThreadLocal<::regex::Regex>>::borrow(&REGEX)
-    }};
+fn main() -> anyhow::Result<()> {
+    // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE) // Set this to DEBUG or TRACE to get debugging info
+        .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
+        .finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+    let filenames = [
+        "sources/headers/bl_mcu_sdk/aon_reg.h",
+        "sources/headers/bl_mcu_sdk/cci_reg.h",
+        "sources/headers/bl_mcu_sdk/codec_misc_reg.h",
+        "sources/headers/bl_mcu_sdk/ef_ctrl_reg.h",
+        "sources/headers/bl_mcu_sdk/ef_data_0_reg.h",
+        "sources/headers/bl_mcu_sdk/ef_data_1_reg.h",
+        "sources/headers/bl_mcu_sdk/glb_reg.h",
+        "sources/headers/bl_mcu_sdk/gpip_reg.h",
+        "sources/headers/bl_mcu_sdk/hbn_reg.h",
+        "sources/headers/bl_mcu_sdk/ipc_reg.h",
+        "sources/headers/bl_mcu_sdk/mcu_misc_reg.h",
+        "sources/headers/bl_mcu_sdk/mm_glb_reg.h",
+        "sources/headers/bl_mcu_sdk/mm_misc_reg.h",
+        "sources/headers/bl_mcu_sdk/pds_reg.h",
+        "sources/headers/bl_mcu_sdk/psram_reg.h",
+        "sources/headers/bl_mcu_sdk/psram_uhs_reg.h",
+        "sources/headers/bl_mcu_sdk/sdh_reg.h",
+        "sources/headers/bl_mcu_sdk/sf_ctrl_reg.h",
+        "sources/headers/bl_mcu_sdk/tzc_sec_reg.h",
+        "sources/headers/bl_mcu_sdk/tzc_nsec_reg.h",
+    ];
+
+    let chip_filename = "sources/headers/bl_mcu_sdk/bl808.h";
+
+    let _ = peripherals(&filenames);
+
+    let _ = peripheral_base(&chip_filename);
+
+    Ok(())
 }
 
 fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
-    // Create our parse context
-
-    // println!("<peripheral>\n{}<registers>\n", fragment);
-
     // Create generated_yaml dir if it doesn't already exist
     let output_dir = Path::new("generated_yaml");
     let _ = std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
@@ -60,45 +85,6 @@ fn peripheral_base(filename: &str) -> Result<(), std::io::Error> {
                 .expect("Failed to write yaml to file");
         }
     }
-
-    Ok(())
-}
-
-fn main() -> anyhow::Result<()> {
-    // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
-    let subscriber = FmtSubscriber::builder()
-        .with_max_level(Level::TRACE) // Set this to DEBUG or TRACE to get debugging info
-        .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
-        .finish();
-    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
-    let filenames = [
-        "sources/headers/bl_mcu_sdk/aon_reg.h",
-        "sources/headers/bl_mcu_sdk/cci_reg.h",
-        "sources/headers/bl_mcu_sdk/codec_misc_reg.h",
-        "sources/headers/bl_mcu_sdk/ef_ctrl_reg.h",
-        "sources/headers/bl_mcu_sdk/ef_data_0_reg.h",
-        "sources/headers/bl_mcu_sdk/ef_data_1_reg.h",
-        "sources/headers/bl_mcu_sdk/glb_reg.h",
-        "sources/headers/bl_mcu_sdk/gpip_reg.h",
-        "sources/headers/bl_mcu_sdk/hbn_reg.h",
-        "sources/headers/bl_mcu_sdk/ipc_reg.h",
-        "sources/headers/bl_mcu_sdk/mcu_misc_reg.h",
-        "sources/headers/bl_mcu_sdk/mm_glb_reg.h",
-        "sources/headers/bl_mcu_sdk/mm_misc_reg.h",
-        "sources/headers/bl_mcu_sdk/pds_reg.h",
-        "sources/headers/bl_mcu_sdk/psram_reg.h",
-        "sources/headers/bl_mcu_sdk/psram_uhs_reg.h",
-        "sources/headers/bl_mcu_sdk/sdh_reg.h",
-        "sources/headers/bl_mcu_sdk/sf_ctrl_reg.h",
-        "sources/headers/bl_mcu_sdk/tzc_sec_reg.h",
-        "sources/headers/bl_mcu_sdk/tzc_nsec_reg.h",
-    ];
-
-    let chip_filename = "sources/headers/bl_mcu_sdk/bl808.h";
-
-    let _ = peripherals(&filenames);
-
-    let _ = peripheral_base(&chip_filename);
 
     Ok(())
 }
