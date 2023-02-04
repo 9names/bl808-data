@@ -14,7 +14,7 @@
   <resetMask>0xFFFFFFFF</resetMask>
   <peripherals>
     <peripheral>
-      <name>GLB</name>
+      <name>glb</name>
       <description>Global configuration register</description>
       <baseAddress>0x20000000</baseAddress>
       <addressBlock>
@@ -29,7 +29,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>AGC</name>
+      <name>agc</name>
       <description>Automatic Gain Control</description>
       <baseAddress>0x20002C00</baseAddress>
       <addressBlock>
@@ -39,7 +39,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>CODEC</name>
+      <name>codec</name>
       <description>Codec miscellaneous control</description>
       <baseAddress>0x30020000</baseAddress>
       <addressBlock>
@@ -49,7 +49,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>DEBUG</name>
+      <name>debug</name>
       <description>Secure debug configuration</description>
       <baseAddress>0x20003000</baseAddress>
       <addressBlock>
@@ -59,7 +59,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>SEC</name>
+      <name>sec</name>
       <description>Secure Engine</description>
       <baseAddress>0x20004000</baseAddress>
       <addressBlock>
@@ -69,7 +69,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>TZC_SEC</name>
+      <name>tzc_sec</name>
       <description>Trust zone isolation</description>
       <baseAddress>0x20005000</baseAddress>
       <addressBlock>
@@ -79,7 +79,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>TZC_NSEC</name>
+      <name>tzc_nsec</name>
       <description>Trust zone isolation 2</description>
       <baseAddress>0x20006000</baseAddress>
       <addressBlock>
@@ -89,7 +89,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>EFUSE</name>
+      <name>efuse</name>
       <description>eFuse memory control</description>
       <baseAddress>0x20056000</baseAddress>
       <addressBlock>
@@ -99,7 +99,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>EF_DATA</name>
+      <name>ef_data</name>
       <baseAddress>0x20056000</baseAddress>
       <addressBlock>
         <offset>0x0</offset>
@@ -108,7 +108,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>CCI</name>
+      <name>cci</name>
       <description>Camera Control Interface</description>
       <baseAddress>0x20008000</baseAddress>
       <addressBlock>
@@ -118,7 +118,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>MISC</name>
+      <name>misc</name>
       <description>Chip Miscellaneous control</description>
       <baseAddress>0x20009000</baseAddress>
       <addressBlock>
@@ -128,7 +128,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>UART0</name>
+      <name>uart0</name>
       <description>Universal Asynchronous Receiver Transmitter</description>
       <baseAddress>0x2000A000</baseAddress>
       <access>read-write</access>
@@ -139,7 +139,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>UART1</name>
+      <name>uart1</name>
       <description>Universal Asynchronous Receiver Transmitter</description>
       <baseAddress>0x2000A100</baseAddress>
       <access>read-write</access>
@@ -150,7 +150,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>SPI0</name>
+      <name>spi0</name>
       <description>Serial Peripheral Interface</description>
       <baseAddress>0x2000A200</baseAddress>
       <addressBlock>
@@ -160,7 +160,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>I2C0</name>
+      <name>i2c0</name>
       <description>Inter-Integrated Circuit bus</description>
       <baseAddress>0x2000A300</baseAddress>
       <addressBlock>
@@ -170,7 +170,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>PWM</name>
+      <name>pwm</name>
       <description>Pulse-Width Modulation module</description>
       <baseAddress>0x2000A400</baseAddress>
       <addressBlock>
@@ -180,7 +180,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>TIMER</name>
+      <name>timer</name>
       <description>Timer control</description>
       <baseAddress>0x2000A500</baseAddress>
       <addressBlock>
@@ -190,7 +190,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>IR</name>
+      <name>ir</name>
       <description>Infrared Remote module</description>
       <baseAddress>0x2000A600</baseAddress>
       <addressBlock>
@@ -200,7 +200,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>IPC</name>
+      <name>ipc</name>
       <description>Inter-processor Channel</description>
       <baseAddress>0x2000A800</baseAddress>
       <addressBlock>
@@ -210,7 +210,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>ISO11898</name>
+      <name>iso11898</name>
       <description>ISO 11898 communication protocol</description>
       <baseAddress>0x2000AA00</baseAddress>
       <addressBlock>
@@ -220,7 +220,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>I2S</name>
+      <name>i2s</name>
       <description>Inter-IC Sound controller</description>
       <baseAddress>0x2000AB00</baseAddress>
       <addressBlock>
@@ -230,7 +230,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>PDM</name>
+      <name>pdm</name>
       <description>Pulse Density Modulation</description>
       <baseAddress>0x2000AC00</baseAddress>
       <addressBlock>
@@ -240,7 +240,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>LZ4D</name>
+      <name>lz4d</name>
       <description>Hardware LZ4 Decompressor</description>
       <baseAddress>0x2000AD00</baseAddress>
       <addressBlock>
@@ -250,7 +250,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>FLASH</name>
+      <name>flash</name>
       <description>Quad Serial Flash control</description>
       <baseAddress>0x2000B000</baseAddress>
       <addressBlock>
@@ -260,7 +260,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>DMA0</name>
+      <name>dma0</name>
       <description>Direct Memory Access</description>
       <baseAddress>0x2000C000</baseAddress>
       <addressBlock>
@@ -270,7 +270,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>DMA1</name>
+      <name>dma1</name>
       <description>Direct Memory Access</description>
       <baseAddress>0x20071000</baseAddress>
       <addressBlock>
@@ -280,7 +280,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>PDS_BASE</name>
+      <name>pds_base</name>
       <description>Sleep control (Power-down sleep?)</description>
       <baseAddress>0x2000E000</baseAddress>
       <addressBlock>
@@ -290,7 +290,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>HBN</name>
+      <name>hbn</name>
       <description>Hibernate (Deep sleep) control</description>
       <baseAddress>0x2000F000</baseAddress>
       <addressBlock>
@@ -300,7 +300,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>AON</name>
+      <name>aon</name>
       <description>Always-On function control</description>
       <baseAddress>0x2000F800</baseAddress>
       <addressBlock>
@@ -310,7 +310,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>PSRAM</name>
+      <name>psram</name>
       <description>Pseudo Static Random Access Memory control</description>
       <baseAddress>0x20052000</baseAddress>
       <addressBlock>
@@ -320,7 +320,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>USB</name>
+      <name>usb</name>
       <description>Universal Serial Bus host</description>
       <baseAddress>0x20072000</baseAddress>
       <addressBlock>
@@ -330,7 +330,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>AUDIO</name>
+      <name>audio</name>
       <description>Audio codec controller</description>
       <baseAddress>0x20055000</baseAddress>
       <addressBlock>
@@ -340,7 +340,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>SDH</name>
+      <name>sdh</name>
       <description>Secure Digital host control</description>
       <baseAddress>0x20060000</baseAddress>
       <addressBlock>
@@ -350,7 +350,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>EMAC</name>
+      <name>emac</name>
       <description>Ethernet Media Access Control</description>
       <baseAddress>0x20070000</baseAddress>
       <addressBlock>
@@ -360,7 +360,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>WIFI</name>
+      <name>wifi</name>
       <description>Wireless Fidelity control</description>
       <baseAddress>0x24B00000</baseAddress>
       <addressBlock>
@@ -370,7 +370,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>PTA</name>
+      <name>pta</name>
       <description>Packet Traffic Arbitration</description>
       <baseAddress>0x24920000</baseAddress>
       <addressBlock>
@@ -380,7 +380,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>MMGLB</name>
+      <name>mmglb</name>
       <description>Multimedia Global controller</description>
       <baseAddress>0x30007000</baseAddress>
       <addressBlock>
@@ -390,7 +390,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>NPU</name>
+      <name>npu</name>
       <description>Bouffalo Convolutional Neural Network</description>
       <baseAddress>0x30024000</baseAddress>
       <addressBlock>
@@ -400,7 +400,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>H264</name>
+      <name>h264</name>
       <description>H.264 video codec control</description>
       <baseAddress>0x30022000</baseAddress>
       <addressBlock>
@@ -410,7 +410,7 @@
       </addressBlock>
     </peripheral>
     <peripheral>
-      <name>CODEC</name>
+      <name>codec</name>
       <description>Codec miscellaneous control</description>
       <baseAddress>0x30020000</baseAddress>
       <addressBlock>

@@ -1,7 +1,8 @@
 ---
 vendor: Bouffalo Lab
-vendorID: Bouffalo Lab (Nanjing) Co., Ltd.
+vendorID: "Bouffalo Lab (Nanjing) Co., Ltd."
 name: BL808
+series: BL80X
 version: "0.1"
 description: BL808 triple-core RISC-V wireless connectivity and AI SOC
 addressUnitBits: 8
@@ -11,7 +12,7 @@ access: read-write
 resetValue: 0
 resetMask: 4294967295
 peripherals:
-  - name: GLB
+  - name: glb
     description: Global configuration register
     baseAddress: 536870912
     addressBlock:
@@ -21,76 +22,76 @@ peripherals:
       - offset: 0
         size: 1024
         usage: registers
-  - name: AGC
+  - name: agc
     description: Automatic Gain Control
     baseAddress: 536882176
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: CODEC
+  - name: codec
     description: Codec miscellaneous control
     baseAddress: 805437440
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: DEBUG
+  - name: debug
     description: Secure debug configuration
     baseAddress: 536883200
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: SEC
+  - name: sec
     description: Secure Engine
     baseAddress: 536887296
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: TZC_SEC
+  - name: tzc_sec
     description: Trust zone isolation
     baseAddress: 536891392
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: TZC_NSEC
+  - name: tzc_nsec
     description: Trust zone isolation 2
     baseAddress: 536895488
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: EFUSE
+  - name: efuse
     description: eFuse memory control
     baseAddress: 537223168
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: EF_DATA
+  - name: ef_data
     baseAddress: 537223168
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: CCI
+  - name: cci
     description: Camera Control Interface
     baseAddress: 536903680
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: MISC
+  - name: misc
     description: Chip Miscellaneous control
     baseAddress: 536907776
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: UART0
+  - name: uart0
     description: Universal Asynchronous Receiver Transmitter
     baseAddress: 536911872
     access: read-write
@@ -98,7 +99,7 @@ peripherals:
       - offset: 0
         size: 256
         usage: registers
-  - name: UART1
+  - name: uart1
     description: Universal Asynchronous Receiver Transmitter
     baseAddress: 536912128
     access: read-write
@@ -106,189 +107,189 @@ peripherals:
       - offset: 0
         size: 256
         usage: registers
-  - name: SPI0
+  - name: spi0
     description: Serial Peripheral Interface
     baseAddress: 536912384
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: I2C0
+  - name: i2c0
     description: Inter-Integrated Circuit bus
     baseAddress: 536912640
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: PWM
+  - name: pwm
     description: Pulse-Width Modulation module
     baseAddress: 536912896
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: TIMER
+  - name: timer
     description: Timer control
     baseAddress: 536913152
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: IR
+  - name: ir
     description: Infrared Remote module
     baseAddress: 536913408
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: IPC
+  - name: ipc
     description: Inter-processor Channel
     baseAddress: 536913920
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: ISO11898
+  - name: iso11898
     description: ISO 11898 communication protocol
     baseAddress: 536914432
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: I2S
+  - name: i2s
     description: Inter-IC Sound controller
     baseAddress: 536914688
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: PDM
+  - name: pdm
     description: Pulse Density Modulation
     baseAddress: 536914944
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: LZ4D
+  - name: lz4d
     description: Hardware LZ4 Decompressor
     baseAddress: 536915200
     addressBlock:
       - offset: 0
         size: 256
         usage: registers
-  - name: FLASH
+  - name: flash
     description: Quad Serial Flash control
     baseAddress: 536915968
     addressBlock:
       - offset: 0
         size: 1024
         usage: registers
-  - name: DMA0
+  - name: dma0
     description: Direct Memory Access
     baseAddress: 536920064
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: DMA1
+  - name: dma1
     description: Direct Memory Access
     baseAddress: 537333760
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: PDS_BASE
+  - name: pds_base
     description: Sleep control (Power-down sleep?)
     baseAddress: 536928256
     addressBlock:
       - offset: 0
         size: 2816
         usage: registers
-  - name: HBN
+  - name: hbn
     description: Hibernate (Deep sleep) control
     baseAddress: 536932352
     addressBlock:
       - offset: 0
         size: 2048
         usage: registers
-  - name: AON
+  - name: aon
     description: Always-On function control
     baseAddress: 536934400
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: PSRAM
+  - name: psram
     description: Pseudo Static Random Access Memory control
     baseAddress: 537206784
     addressBlock:
       - offset: 0
         size: 512
         usage: registers
-  - name: USB
+  - name: usb
     description: Universal Serial Bus host
     baseAddress: 537337856
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: AUDIO
+  - name: audio
     description: Audio codec controller
     baseAddress: 537219072
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: SDH
+  - name: sdh
     description: Secure Digital host control
     baseAddress: 537264128
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: EMAC
+  - name: emac
     description: Ethernet Media Access Control
     baseAddress: 537329664
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: WIFI
+  - name: wifi
     description: Wireless Fidelity control
     baseAddress: 615514112
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: PTA
+  - name: pta
     description: Packet Traffic Arbitration
     baseAddress: 613548032
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: MMGLB
+  - name: mmglb
     description: Multimedia Global controller
     baseAddress: 805335040
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: NPU
+  - name: npu
     description: Bouffalo Convolutional Neural Network
     baseAddress: 805453824
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: H264
+  - name: h264
     description: H.264 video codec control
     baseAddress: 805445632
     addressBlock:
       - offset: 0
         size: 4096
         usage: registers
-  - name: CODEC
+  - name: codec
     description: Codec miscellaneous control
     baseAddress: 805437440
     addressBlock:
