@@ -3,43 +3,6 @@ use bl808_data::svd_fragments_bl616 as svd_fragments;
 // use tracing::Level;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
-#[macro_export]
-macro_rules! regex {
-    ($re:literal) => {{
-        ::ref_thread_local::ref_thread_local! {
-            static managed REGEX: ::regex::Regex = ::regex::Regex::new($re).unwrap();
-        }
-        <REGEX as ::ref_thread_local::RefThreadLocal<::regex::Regex>>::borrow(&REGEX)
-    }};
-}
-
-// Convenience wrapper for calling with a single filename
-fn peripheral(filename: &str, fragment: &str) -> Result<(), std::io::Error> {
-    peripherals(&[filename], fragment)
-}
-
-fn peripherals(filenames: &[&str], fragment: &str) -> Result<(), std::io::Error> {
-    // Create our parse context
-    let mut parser = Parser::new();
-
-    println!("<peripheral>\n{}<registers>\n", fragment);
-
-    for filename in filenames {
-        let f = std::fs::read(filename)?;
-        for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
-            let l = String::from_utf8_lossy(l);
-            parser.parse(linenum, l.to_string());
-        }
-    }
-
-    // Dump out all the registers
-    for register in parser.registers() {
-        print!("{}", register);
-    }
-    print!("\n</registers>\n</peripheral>");
-    Ok(())
-}
-
 fn main() -> anyhow::Result<()> {
     // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
     let subscriber = FmtSubscriber::builder()
@@ -115,5 +78,32 @@ fn main() -> anyhow::Result<()> {
 
     println!("{}", svd_fragments::FOOTER);
 
+    Ok(())
+}
+
+// Convenience wrapper for calling with a single filename
+fn peripheral(filename: &str, fragment: &str) -> Result<(), std::io::Error> {
+    peripherals(&[filename], fragment)
+}
+
+fn peripherals(filenames: &[&str], fragment: &str) -> Result<(), std::io::Error> {
+    // Create our parse context
+    let mut parser = Parser::new();
+
+    println!("<peripheral>\n{}<registers>\n", fragment);
+
+    for filename in filenames {
+        let f = std::fs::read(filename)?;
+        for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
+            let l = String::from_utf8_lossy(l);
+            parser.parse(linenum, l.to_string());
+        }
+    }
+
+    // Dump out all the registers
+    for register in parser.registers() {
+        print!("{}", register);
+    }
+    print!("\n</registers>\n</peripheral>");
     Ok(())
 }

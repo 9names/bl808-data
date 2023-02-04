@@ -2,16 +2,6 @@ use bl808_data::parser::Parser;
 use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
-#[macro_export]
-macro_rules! regex {
-    ($re:literal) => {{
-        ::ref_thread_local::ref_thread_local! {
-            static managed REGEX: ::regex::Regex = ::regex::Regex::new($re).unwrap();
-        }
-        <REGEX as ::ref_thread_local::RefThreadLocal<::regex::Regex>>::borrow(&REGEX)
-    }};
-}
-
 fn main() -> anyhow::Result<()> {
     // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
     let subscriber = FmtSubscriber::builder()
