@@ -1,7 +1,7 @@
 use bl808_data::parser::Parser;
 use bl808_data::svd_fragments_bl616 as svd_fragments;
 use tracing::Level;
-use tracing_subscriber::FmtSubscriber;
+use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 #[macro_export]
 macro_rules! regex {
@@ -43,7 +43,8 @@ fn peripherals(filenames: &[&str], fragment: &str) -> Result<(), std::io::Error>
 fn main() -> anyhow::Result<()> {
     // Use tracing to get good debug tracing, and register stdout as a tracing subscriber
     let subscriber = FmtSubscriber::builder()
-        .with_max_level(Level::TRACE) // Set this to DEBUG or TRACE to get debugging info
+        .with_env_filter(EnvFilter::from_default_env())
+        //.with_max_level(Level::INFO) // Set this to DEBUG or TRACE to get debugging info
         .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
