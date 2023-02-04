@@ -14,8 +14,8 @@ fn main() -> anyhow::Result<()> {
     for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
         let l = String::from_utf8_lossy(l);
         let address = parse_peri_address(l.to_string(), linenum);
-        if let Some(data) = address {
-            println!("Peripheral: \"{}\" Address: \"{}\"", data[0], data[1]);
+        if let Some(peri) = address {
+            println!("{peri}");
         }
     }
 
