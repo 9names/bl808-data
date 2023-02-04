@@ -409,15 +409,5 @@
         <usage>registers</usage>
       </addressBlock>
     </peripheral>
-    <peripheral>
-      <name>codec</name>
-      <description>Codec miscellaneous control</description>
-      <baseAddress>0x30020000</baseAddress>
-      <addressBlock>
-        <offset>0x0</offset>
-        <size>0x1000</size>
-        <usage>registers</usage>
-      </addressBlock>
-    </peripheral>
   </peripherals>
 </device>

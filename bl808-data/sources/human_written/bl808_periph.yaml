@@ -289,10 +289,3 @@ peripherals:
       - offset: 0
         size: 4096
         usage: registers
-  - name: codec
-    description: Codec miscellaneous control
-    baseAddress: 805437440
-    addressBlock:
-      - offset: 0
-        size: 4096
-        usage: registers
