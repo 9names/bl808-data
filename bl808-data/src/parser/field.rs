@@ -64,7 +64,11 @@ impl Field {
         let msb = str::parse::<u32>(&self.msb).expect("Couldn't parse Field MSB as an int");
         let lsb = str::parse::<u32>(&self.lsb).expect("Couldn't parse Field LSB as an int");
         let bit_width = (msb + 1) - lsb;
-        let descriptionfield = if !self.description.trim().is_empty() {
+
+        // If the description field is empty or the same as the name, drop it
+        let descriptionfield = if !self.description.trim().is_empty()
+            && self.description.trim().to_lowercase() != self.name.trim().to_lowercase()
+        {
             format!("      description: {}\n", self.description.trim())
         } else {
             String::from("")
@@ -80,7 +84,10 @@ impl Field {
 
     #[allow(dead_code)]
     pub fn to_svd2rust_style_yaml(&self) -> String {
-        let descriptionfield = if !self.description.trim().is_empty() {
+        // If the description field is empty or the same as the name, drop it
+        let descriptionfield = if !self.description.trim().is_empty()
+            && self.description.trim().to_lowercase() != self.name.trim().to_lowercase()
+        {
             format!("      description: {}\n", self.description.trim())
         } else {
             String::from("")
@@ -96,7 +103,10 @@ impl Field {
 
     #[allow(dead_code)]
     pub fn to_xml(&self) -> String {
-        let descriptionfield = if !self.description.trim().is_empty() {
+        // If the description field is empty or the same as the name, drop it
+        let descriptionfield = if !self.description.trim().is_empty()
+            && self.description.trim().to_lowercase() != self.name.trim().to_lowercase()
+        {
             format!("<description>{}</description>\n", self.description.trim())
         } else {
             String::from("")

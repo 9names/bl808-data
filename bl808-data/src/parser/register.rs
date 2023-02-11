@@ -62,7 +62,11 @@ impl Register {
         } else {
             String::from("")
         };
-        let descriptionfield = if !self.description.trim().is_empty() {
+
+        // If the description field is empty or the same as the name, drop it
+        let descriptionfield = if !self.description.trim().is_empty()
+            && self.description.trim().to_lowercase() != self.name.trim().to_lowercase()
+        {
             format!("  description: {}\n", self.description.trim())
         } else {
             String::from("")
@@ -91,7 +95,10 @@ impl Register {
         } else {
             String::from("")
         };
-        let descriptionfield = if !self.description.trim().is_empty() {
+        // If the description field is empty or the same as the name, drop it
+        let descriptionfield = if !self.description.trim().is_empty()
+            && self.description.trim().to_lowercase() != self.name.trim().to_lowercase()
+        {
             format!("<description>{}</description>\n", self.description.trim())
         } else {
             String::from("")
