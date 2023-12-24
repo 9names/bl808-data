@@ -1,6 +1,6 @@
 use bl808_data::parser::Parser;
 use bl808_data::svd_fragments_bl616 as svd_fragments;
-// use tracing::Level;
+use std::path::Path;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {
@@ -11,45 +11,34 @@ fn main() -> anyhow::Result<()> {
         .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+    let sdk_path = Path::new("sources")
+        .join("bouffalo_sdk")
+        .join("bl616")
+        .join("std")
+        .join("include")
+        .join("hardware");
     print!("{}", svd_fragments::HEADER);
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/aon_reg.h",
-        svd_fragments::AON,
-    );
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/cci_reg.h",
-        svd_fragments::CCI,
-    );
+
+    let _ = peripheral(&sdk_path.join("aon_reg.h"), svd_fragments::AON);
+    let _ = peripheral(&sdk_path.join("cci_reg.h"), svd_fragments::CCI);
 
     let _ = peripherals(
         &[
-            "sources/headers_bl616/bl_mcu_sdk/ef_ctrl_reg.h",
-            "sources/headers_bl616/bl_mcu_sdk/ef_data_reg.h",
+            &sdk_path.join("ef_ctrl_reg.h"),
+            &sdk_path.join("ef_data_reg.h"),
         ],
         svd_fragments::EF_DATA,
     );
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/glb_reg.h",
-        svd_fragments::GLB,
-    );
+    let _ = peripheral(&sdk_path.join("glb_reg.h"), svd_fragments::GLB);
     //let _ = peripheral("sources/headers_bl616/bl_mcu_sdk/gpip_reg.h", svd_fragments::GPIP);
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/hbn_reg.h",
-        svd_fragments::HBN,
-    );
+    let _ = peripheral(&sdk_path.join("hbn_reg.h"), svd_fragments::HBN);
     //let _ = peripheral("sources/headers_bl616/bl_mcu_sdk/ipc_reg.h", svd_fragments::IPC0);
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/mcu_misc_reg.h",
-        svd_fragments::MCU_MISC,
-    );
+    let _ = peripheral(&sdk_path.join("mcu_misc_reg.h"), svd_fragments::MCU_MISC);
 
     // // let _ = peripheral("sources/headers/bl_mcu_sdk/mm_glb_reg.h", svd_fragments::GLB);
     // // let _ = peripheral("sources/headers/bl_mcu_sdk/mm_misc_reg.h", svd_fragments::);
 
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/pds_reg.h",
-        svd_fragments::PDS,
-    );
+    let _ = peripheral(&sdk_path.join("pds_reg.h"), svd_fragments::PDS);
     // let _ = peripherals(
     //     &[
     //         "sources/headers_bl616/bl_mcu_sdk/psram_reg.h",
@@ -57,24 +46,12 @@ fn main() -> anyhow::Result<()> {
     //     ],
     //     svd_fragments::PSRAM_CTRL,
     // );
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/sdh_reg.h",
-        svd_fragments::SDH,
-    );
+    let _ = peripheral(&sdk_path.join("sdh_reg.h"), svd_fragments::SDH);
 
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/sf_ctrl_reg.h",
-        svd_fragments::SF_CTRL,
-    );
+    let _ = peripheral(&sdk_path.join("sf_ctrl_reg.h"), svd_fragments::SF_CTRL);
 
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/tzc_sec_reg.h",
-        svd_fragments::TZC_SEC,
-    );
-    let _ = peripheral(
-        "sources/headers_bl616/bl_mcu_sdk/tzc_nsec_reg.h",
-        svd_fragments::TZC_NSEC,
-    );
+    let _ = peripheral(&sdk_path.join("tzc_sec_reg.h"), svd_fragments::TZC_SEC);
+    let _ = peripheral(&sdk_path.join("tzc_nsec_reg.h"), svd_fragments::TZC_NSEC);
 
     println!("{}", svd_fragments::FOOTER);
 
@@ -82,11 +59,11 @@ fn main() -> anyhow::Result<()> {
 }
 
 // Convenience wrapper for calling with a single filename
-fn peripheral(filename: &str, fragment: &str) -> Result<(), std::io::Error> {
+fn peripheral(filename: &Path, fragment: &str) -> Result<(), std::io::Error> {
     peripherals(&[filename], fragment)
 }
 
-fn peripherals(filenames: &[&str], fragment: &str) -> Result<(), std::io::Error> {
+fn peripherals(filenames: &[&Path], fragment: &str) -> Result<(), std::io::Error> {
     // Create our parse context
     let mut parser = Parser::new();
 
