@@ -11,8 +11,11 @@ fn main() -> anyhow::Result<()> {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
     let sdk_path = Path::new("sources")
-        .join("headers")
-        .join("bl_mcu_sdk");
+        .join("bouffalo_sdk")
+        .join("bl808")
+        .join("std")
+        .join("include")
+        .join("hardware");
     let filenames = [
         sdk_path.join("aon_reg.h"),
         sdk_path.join("cci_reg.h"),

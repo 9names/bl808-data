@@ -13,8 +13,11 @@ fn main() -> anyhow::Result<()> {
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
     print!("{}", svd_fragments::HEADER);
     let sdk_path = Path::new("sources")
-        .join("headers")
-        .join("bl_mcu_sdk");
+        .join("bouffalo_sdk")
+        .join("bl808")
+        .join("std")
+        .join("include")
+        .join("hardware");
     let _ = peripheral(
         &sdk_path.join("codec_misc_reg.h"),
         svd_fragments::CODEC,
