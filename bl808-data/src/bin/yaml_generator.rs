@@ -1,7 +1,5 @@
-use std::{io::Write, path::Path};
-
+use std::{io::Write, path::{Path, PathBuf}};
 use bl808_data::parser::{peripheral::parse_peri_address, Parser};
-// use tracing::Level;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {
@@ -11,32 +9,34 @@ fn main() -> anyhow::Result<()> {
         //.with_max_level(Level::INFO) // Set this to DEBUG or TRACE to get debugging info
         .with_writer(std::io::stderr) // Write to stderr so we can still pipe output to file
         .finish();
-
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+    let sdk_path = Path::new("sources")
+        .join("headers")
+        .join("bl_mcu_sdk");
     let filenames = [
-        "sources/headers/bl_mcu_sdk/aon_reg.h",
-        "sources/headers/bl_mcu_sdk/cci_reg.h",
-        "sources/headers/bl_mcu_sdk/codec_misc_reg.h",
-        "sources/headers/bl_mcu_sdk/ef_ctrl_reg.h",
-        "sources/headers/bl_mcu_sdk/ef_data_0_reg.h",
-        "sources/headers/bl_mcu_sdk/ef_data_1_reg.h",
-        "sources/headers/bl_mcu_sdk/glb_reg.h",
-        "sources/headers/bl_mcu_sdk/gpip_reg.h",
-        "sources/headers/bl_mcu_sdk/hbn_reg.h",
-        "sources/headers/bl_mcu_sdk/ipc_reg.h",
-        "sources/headers/bl_mcu_sdk/mcu_misc_reg.h",
-        "sources/headers/bl_mcu_sdk/mm_glb_reg.h",
-        "sources/headers/bl_mcu_sdk/mm_misc_reg.h",
-        "sources/headers/bl_mcu_sdk/pds_reg.h",
-        "sources/headers/bl_mcu_sdk/psram_reg.h",
-        "sources/headers/bl_mcu_sdk/psram_uhs_reg.h",
-        "sources/headers/bl_mcu_sdk/sdh_reg.h",
-        "sources/headers/bl_mcu_sdk/sf_ctrl_reg.h",
-        "sources/headers/bl_mcu_sdk/tzc_sec_reg.h",
-        "sources/headers/bl_mcu_sdk/tzc_nsec_reg.h",
+        sdk_path.join("aon_reg.h"),
+        sdk_path.join("cci_reg.h"),
+        sdk_path.join("codec_misc_reg.h"),
+        sdk_path.join("ef_ctrl_reg.h"),
+        sdk_path.join("ef_data_0_reg.h"),
+        sdk_path.join("ef_data_1_reg.h"),
+        sdk_path.join("glb_reg.h"),
+        sdk_path.join("gpip_reg.h"),
+        sdk_path.join("hbn_reg.h"),
+        sdk_path.join("ipc_reg.h"),
+        sdk_path.join("mcu_misc_reg.h"),
+        sdk_path.join("mm_glb_reg.h"),
+        sdk_path.join("mm_misc_reg.h"),
+        sdk_path.join("pds_reg.h"),
+        sdk_path.join("psram_reg.h"),
+        sdk_path.join("psram_uhs_reg.h"),
+        sdk_path.join("sdh_reg.h"),
+        sdk_path.join("sf_ctrl_reg.h"),
+        sdk_path.join("tzc_sec_reg.h"),
+        sdk_path.join("tzc_nsec_reg.h"),
     ];
 
-    let chip_filename = "sources/headers/bl_mcu_sdk/bl808.h";
+    let chip_filename = &sdk_path.join("bl808.h");
 
     let _ = peripherals(&filenames);
 
@@ -45,7 +45,7 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
+fn peripherals(filenames: &[PathBuf]) -> Result<(), std::io::Error> {
     // Create generated_yaml dir if it doesn't already exist
     let output_dir = Path::new("generated_yaml");
     std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
@@ -73,7 +73,7 @@ fn peripherals(filenames: &[&str]) -> Result<(), std::io::Error> {
     Ok(())
 }
 
-fn peripheral_base(filename: &str) -> Result<(), std::io::Error> {
+fn peripheral_base(filename: &Path) -> Result<(), std::io::Error> {
     let output_dir = Path::new("generated_yaml");
     std::fs::create_dir_all(output_dir).expect("Unable to create yaml output dir");
     let f = std::fs::read(filename)?;
