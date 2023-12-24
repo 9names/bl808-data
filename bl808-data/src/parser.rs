@@ -92,7 +92,7 @@ impl Parser {
                         match parse {
                             crate::ParseResult::Match(_) => panic!("Not expecting match"),
                             crate::ParseResult::Capture(c) => {
-                                println!("reg width {:?}", c[0]);
+                                // println!("reg width {:?}", c[0]);
                                 reg.size = match c[0].as_str() {
                                     "uint32_t" => Some(32),
                                     "uint16_t" => Some(16),
