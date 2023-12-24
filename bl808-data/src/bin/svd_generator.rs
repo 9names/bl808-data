@@ -18,10 +18,7 @@ fn main() -> anyhow::Result<()> {
         .join("std")
         .join("include")
         .join("hardware");
-    let _ = peripheral(
-        &sdk_path.join("codec_misc_reg.h"),
-        svd_fragments::CODEC,
-    );
+    let _ = peripheral(&sdk_path.join("codec_misc_reg.h"), svd_fragments::CODEC);
     let _ = peripheral(&sdk_path.join("aon_reg.h"), svd_fragments::AON);
     let _ = peripheral(&sdk_path.join("cci_reg.h"), svd_fragments::CCI);
     // Display controller?
@@ -39,10 +36,7 @@ fn main() -> anyhow::Result<()> {
     let _ = peripheral(&sdk_path.join("gpip_reg.h"), svd_fragments::GPIP);
     let _ = peripheral(&sdk_path.join("hbn_reg.h"), svd_fragments::HBN);
     let _ = peripheral(&sdk_path.join("ipc_reg.h"), svd_fragments::IPC0);
-    let _ = peripheral(
-        &sdk_path.join("mcu_misc_reg.h"),
-        svd_fragments::MCU_MISC,
-    );
+    let _ = peripheral(&sdk_path.join("mcu_misc_reg.h"), svd_fragments::MCU_MISC);
     // mm == c906. This tool is only caring about e907 peripherals at the moment.
     // let _ = peripheral(&sdk_path.join("mm_glb_reg.h", svd_fragments::GLB);
     // let _ = peripheral(&sdk_path.join("mm_misc_reg.h", svd_fragments::);
@@ -57,19 +51,10 @@ fn main() -> anyhow::Result<()> {
     );
     let _ = peripheral(&sdk_path.join("sdh_reg.h"), svd_fragments::SDH);
 
-    let _ = peripheral(
-        &sdk_path.join("sf_ctrl_reg.h"),
-        svd_fragments::SF_CTRL,
-    );
+    let _ = peripheral(&sdk_path.join("sf_ctrl_reg.h"), svd_fragments::SF_CTRL);
 
-    let _ = peripheral(
-        &sdk_path.join("tzc_sec_reg.h"),
-        svd_fragments::TZC_SEC,
-    );
-    let _ = peripheral(
-        &sdk_path.join("tzc_nsec_reg.h"),
-        svd_fragments::TZC_NSEC,
-    );
+    let _ = peripheral(&sdk_path.join("tzc_sec_reg.h"), svd_fragments::TZC_SEC);
+    let _ = peripheral(&sdk_path.join("tzc_nsec_reg.h"), svd_fragments::TZC_NSEC);
     // let _ = peripheral(&sdk_path.join(".h", svd_fragments::);
 
     println!("{}", svd_fragments::FOOTER);

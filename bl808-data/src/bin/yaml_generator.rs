@@ -1,5 +1,8 @@
-use std::{io::Write, path::{Path, PathBuf}};
 use bl808_data::parser::{peripheral::parse_peri_address, Parser};
+use std::{
+    io::Write,
+    path::{Path, PathBuf},
+};
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {
