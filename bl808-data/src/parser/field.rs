@@ -54,6 +54,7 @@ pub fn svd_access_map(access: &str) -> &str {
         "w1c" => "write-only", // TODO: needs oneToClear in modifiedWriteValues.
         "rsvd" => "read-only",
         "RSVD" => "read-only",
+        "None" => "read-write", // This appears in bl616 headers. Might be worth patching...
         _ => "UNMAPPED_PLZ_FIX",
     }
 }
