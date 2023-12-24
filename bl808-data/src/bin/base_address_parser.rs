@@ -1,5 +1,5 @@
 use bl808_data::parser::peripheral::parse_peri_address;
-// use tracing::Level;
+use std::path::Path;
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {
@@ -11,7 +11,13 @@ fn main() -> anyhow::Result<()> {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
-    let f = std::fs::read("sources/headers/bl_mcu_sdk/bl808.h")?;
+    let sdk_path = Path::new("sources")
+        .join("bouffalo_sdk")
+        .join("bl808")
+        .join("std")
+        .join("include")
+        .join("hardware");
+    let f = std::fs::read(sdk_path.join("bl808.h"))?;
     for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
         let l = String::from_utf8_lossy(l);
         let address = parse_peri_address(l.to_string(), linenum);
