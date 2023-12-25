@@ -6,7 +6,7 @@ cargo install svdtools
 rmdir /q /s generated
 mkdir generated
 @REM Build and run the svd_generator
-cargo run --release --bin svd_generator > generated/BL808.svd
+cargo run --release --bin svd_generator
 @REM Convert the SVD to yaml to make it a little easier for humans to read
 svdtools convert generated/BL808.svd generated/BL808.yaml
 @REM Convert it back to SVD again, so our shoddily formatted SVD is a bit nicer
