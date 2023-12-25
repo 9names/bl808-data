@@ -11,18 +11,29 @@ fn main() -> anyhow::Result<()> {
         .finish();
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
+    let chips = ["bl602", "bl616", "bl702", "bl702l", "bl808"];
+
+    for chip in chips {
+        parse_base(chip);
+    }
+
+    Ok(())
+}
+
+fn parse_base(chip: &str) -> anyhow::Result<()> {
     let sdk_path = Path::new("sources")
         .join("bouffalo_sdk")
-        .join("bl808")
+        .join(chip)
         .join("std")
         .join("include")
         .join("hardware");
-    let f = std::fs::read(sdk_path.join("bl808.h"))?;
+    let f = std::fs::read(sdk_path.join(format!("{chip}.h")))?;
     let path = Path::new("generated_toplevel");
     if !path.exists() {
         std::fs::create_dir(&path)?;
     }
-    let mut output = File::create(path.join("bl808.yaml"))?;
+    let mut output = File::create(path.join(format!("{chip}.yaml")))?;
+
     for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
         let l = String::from_utf8_lossy(l);
         let address = parse_peri_address(l.to_string(), linenum);
@@ -30,6 +41,5 @@ fn main() -> anyhow::Result<()> {
             output.write_all(format!("{peri}").as_bytes()).unwrap();
         }
     }
-
     Ok(())
 }
