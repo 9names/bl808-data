@@ -1,5 +1,5 @@
 use bl808_data::parser::peripheral::parse_peri_address;
-use std::path::Path;
+use std::{fs::File, io::Write, path::Path};
 use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
 fn main() -> anyhow::Result<()> {
@@ -18,11 +18,16 @@ fn main() -> anyhow::Result<()> {
         .join("include")
         .join("hardware");
     let f = std::fs::read(sdk_path.join("bl808.h"))?;
+    let path = Path::new("generated_toplevel");
+    if !path.exists() {
+        std::fs::create_dir(&path)?;
+    }
+    let mut output = File::create(path.join("bl808.yaml"))?;
     for (linenum, l) in f.split(|b| b == &b'\n').enumerate() {
         let l = String::from_utf8_lossy(l);
         let address = parse_peri_address(l.to_string(), linenum);
         if let Some(peri) = address {
-            print!("{peri}");
+            output.write_all(format!("{peri}").as_bytes()).unwrap();
         }
     }
 
